@@ -1,0 +1,35 @@
+package com.prueba.prueba;
+
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+@SpringBootTest
+@Slf4j
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
+class PruebaApplicationTests {
+
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Test
+	public void consultarTodasTareas() throws Exception {
+		mockMvc.perform(get("/tareas/todasTareas")).andDo(print()).andExpect(status().isOk());
+	}
+
+	@Test
+	void contextLoads() {
+	}
+
+}
