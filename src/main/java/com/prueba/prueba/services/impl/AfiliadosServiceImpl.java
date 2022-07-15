@@ -1,5 +1,7 @@
 package com.prueba.prueba.services.impl;
 
+import com.prueba.prueba.dto.AfiliadosDto;
+import com.prueba.prueba.dto.RpaNuevoAfiliadoDto;
 import com.prueba.prueba.repository.IAfiliadosRepository;
 import com.prueba.prueba.repository.ICasosRepository;
 import com.prueba.prueba.services.IAfiliadosService;
@@ -14,12 +16,81 @@ import java.util.List;
 @Log4j2
 public class AfiliadosServiceImpl implements IAfiliadosService {
 
-
+    private IAfiliadosRepository iAfiliadosRepository;
 
     @Autowired
-    public AfiliadosServiceImpl() {
+    public AfiliadosServiceImpl(IAfiliadosRepository iAfiliadosRepository) {
+        this.iAfiliadosRepository = iAfiliadosRepository;
 
     }
 
 
+    @Override
+    public List<AfiliadosDto> consultarTodosAfiliados() {
+        List<AfiliadosDto> res = new ArrayList<>();
+        try {
+            res = iAfiliadosRepository.consultarTodosAfiliados();
+        } catch (Exception e) {
+            log.error("Error al consultar todos los afiliados", e);
+        }
+        return res;
+    }
+
+    @Override
+    public List<AfiliadosDto> consultarAfiliadoPorDocumento(String documento) {
+        List<AfiliadosDto> res = new ArrayList<>();
+        try {
+            res = iAfiliadosRepository.consultarAfiliadoPorDocumento(documento);
+        } catch (Exception e) {
+            log.error("Error al consultar afiliado por documento", e);
+        }
+        return res;
+    }
+
+    @Override
+    public String crearAfiliado(RpaNuevoAfiliadoDto rpaNuevoAfiliadoDto) {
+
+        try {
+            Integer validarAfiliado = iAfiliadosRepository.consultarDocumentoExistente(rpaNuevoAfiliadoDto.getDocumento());
+
+            if (validarAfiliado == 0) {
+                iAfiliadosRepository.crearAfiliado(
+                        rpaNuevoAfiliadoDto.getNombre(),
+                        rpaNuevoAfiliadoDto.getApellido(),
+                        rpaNuevoAfiliadoDto.getDocumento());
+            } else {
+                return "Ya existe un afiliado con el documento ingresado";
+            }
+        } catch (Exception e) {
+            log.error("Error al crear afiliado", e);
+            return "Error al crear afiliado";
+        }
+        return "Afiliado creado";
+    }
+
+    @Override
+    public String actualizarAfiliado(RpaNuevoAfiliadoDto rpaNuevoAfiliadoDto) {
+        try {
+            Integer validarAfiliado = iAfiliadosRepository.consultarDocumentoExistente(rpaNuevoAfiliadoDto.getDocumento());
+
+            if (validarAfiliado > 0) {
+                iAfiliadosRepository.actualizarAfiliado(
+                        rpaNuevoAfiliadoDto.getNombre(),
+                        rpaNuevoAfiliadoDto.getApellido(),
+                        rpaNuevoAfiliadoDto.getDocumento());
+            } else {
+                return "No existe un afiliado con el documento ingresado para ser actualizado";
+            }
+
+        } catch (Exception e) {
+            log.error("Error al actualizar afiliado", e);
+            return "Error al actualizar afiliado";
+        }
+        return "Afiliado actualizado";
+    }
+
+    @Override
+    public String eliminarAfiliado(String documento) {
+        return null;
+    }
 }

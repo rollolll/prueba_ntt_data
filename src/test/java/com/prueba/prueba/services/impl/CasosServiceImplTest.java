@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 class CasosServiceImplTest {
 
     @InjectMocks
-    private CasosServiceImpl usuariosServiceImpl;
+    private CasosServiceImpl casosServiceImpl;
 
     @Mock
     private IAfiliadosRepository iAfiliadosRepository;

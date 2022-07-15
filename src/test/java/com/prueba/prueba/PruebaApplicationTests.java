@@ -24,11 +24,6 @@ class PruebaApplicationTests {
 	private MockMvc mockMvc;
 
 	@Test
-	public void consultarTodasTareas() throws Exception {
-		mockMvc.perform(get("/tareas/todasTareas")).andDo(print()).andExpect(status().isOk());
-	}
-
-	@Test
 	void contextLoads() {
 	}
 
