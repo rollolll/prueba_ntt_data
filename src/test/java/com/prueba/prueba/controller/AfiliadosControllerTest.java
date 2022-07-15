@@ -90,6 +90,16 @@ class AfiliadosControllerTest {
                 .andExpect(content().string(notNullValue()));
     }
 
+    @Test
+    public void eliminarAfiliado() throws Exception {
+        String Json = "{\"documento\":\"11223344\"}";
+        mockMvc.perform(post("/afiliados/eliminarAfiliado")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Json))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(notNullValue()));
+    }
+
 
 }
 

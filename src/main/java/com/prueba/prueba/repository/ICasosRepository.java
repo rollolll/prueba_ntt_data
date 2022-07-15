@@ -40,4 +40,7 @@ public interface ICasosRepository extends JpaRepository<CasosEntity, Integer> {
             @Param("descripcion") String descripcion,
             @Param("estado") String estado);
 
+    @Query(value = "DELETE FROM casos WHERE documento_afiliado=:documento_afiliado RETURNING id", nativeQuery = true)
+    public String eliminarCaso(@Param("documento_afiliado") String documento_afiliado);
+
 }

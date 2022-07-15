@@ -17,11 +17,12 @@ import java.util.List;
 public class AfiliadosServiceImpl implements IAfiliadosService {
 
     private IAfiliadosRepository iAfiliadosRepository;
+    private ICasosRepository iCasosRepository;
 
     @Autowired
-    public AfiliadosServiceImpl(IAfiliadosRepository iAfiliadosRepository) {
+    public AfiliadosServiceImpl(IAfiliadosRepository iAfiliadosRepository, ICasosRepository iCasosRepository) {
         this.iAfiliadosRepository = iAfiliadosRepository;
-
+        this.iCasosRepository = iCasosRepository;
     }
 
 
@@ -91,6 +92,22 @@ public class AfiliadosServiceImpl implements IAfiliadosService {
 
     @Override
     public String eliminarAfiliado(String documento) {
-        return null;
+        try{
+            Integer validarAfiliado = iAfiliadosRepository.consultarDocumentoExistente(documento);
+            Integer validarCasosAfiliado = iCasosRepository.consultarCasoPorAfiliadoExistente(documento);
+
+            if (validarAfiliado > 0) {
+                if (validarCasosAfiliado > 0){
+                    iCasosRepository.eliminarCaso(documento);
+                }
+                iAfiliadosRepository.eliminarAfiliado(documento);
+            } else {
+                return "No existe un afiliado con el documento ingresado para ser eliminado";
+            }
+        }catch (Exception e) {
+            log.error("Error al eliminar afiliado", e);
+            return "Error al eliminar afiliado";
+        }
+        return "Afiliado eliminado";
     }
 }

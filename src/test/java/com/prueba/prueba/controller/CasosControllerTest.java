@@ -86,6 +86,16 @@ class CasosControllerTest {
                 .andExpect(content().string(notNullValue()));
     }
 
+    @Test
+    public void eliminarCaso() throws Exception {
+        String Json = "{\"documento_afiliado\":\"11223344\"}";
+        mockMvc.perform(post("/casos/eliminarCaso")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Json))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(notNullValue()));
+    }
+
 
 }
 

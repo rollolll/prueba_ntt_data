@@ -23,6 +23,7 @@ public interface IAfiliadosRepository extends JpaRepository<AfiliadosEntity, Int
     Integer consultarDocumentoExistente(
             @Param("documento") String documento);
 
+
     @Query(value = "INSERT INTO afiliados(nombre, apellido,documento)"
             + "     VALUES (:nombre,:apellido, :documento) "
             + "     RETURNING id", nativeQuery = true)
@@ -39,4 +40,7 @@ public interface IAfiliadosRepository extends JpaRepository<AfiliadosEntity, Int
             @Param("apellido") String apellido,
             @Param("documento") String documento);
 
+
+    @Query(value = "DELETE FROM afiliados WHERE documento=:documento RETURNING id", nativeQuery = true)
+    public String eliminarAfiliado(@Param("documento") String documento);
 }
