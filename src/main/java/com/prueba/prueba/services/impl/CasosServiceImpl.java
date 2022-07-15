@@ -17,10 +17,12 @@ import java.util.List;
 public class CasosServiceImpl implements ICasosService {
 
 private ICasosRepository iCasosRepository;
+private IAfiliadosRepository iAfiliadosRepository;
 
     @Autowired
-    public CasosServiceImpl(ICasosRepository iCasosRepository) {
+    public CasosServiceImpl(ICasosRepository iCasosRepository, IAfiliadosRepository iAfiliadosRepository) {
         this.iCasosRepository = iCasosRepository;
+        this.iAfiliadosRepository = iAfiliadosRepository;
     }
 
     @Override
@@ -48,7 +50,11 @@ private ICasosRepository iCasosRepository;
     @Override
     public String crearCaso(RpaNuevoCasoDto rpaNuevoCasoDto) {
         try{
+            int validarAfiliado = iAfiliadosRepository.consultarDocumentoExistente(rpaNuevoCasoDto.getDocumento_afiliado());
             int validarCaso = iCasosRepository.consultarCasoPorAfiliadoExistente(rpaNuevoCasoDto.getDocumento_afiliado());
+            if(validarAfiliado == 0) {
+                return "No se puede crear el caso, el afiliado no existe";
+            }
             if(validarCaso == 0) {
                 iCasosRepository.crearCaso(
                         rpaNuevoCasoDto.getDocumento_afiliado(),
